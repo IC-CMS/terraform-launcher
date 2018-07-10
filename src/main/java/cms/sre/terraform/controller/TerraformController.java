@@ -1,4 +1,4 @@
-package cms.sre.terraform.cms.sre.terraform.controller;
+package cms.sre.terraform.controller;
 
 import cms.sre.terraform.model.GitlabPushEvent;
 import cms.sre.terraform.model.TerraformDestroyEvent;
