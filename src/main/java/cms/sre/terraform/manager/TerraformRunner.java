@@ -15,12 +15,12 @@ import java.io.InputStreamReader;
 @Component
 public class TerraformRunner extends ProcessRunner {
 
-    public static final Logger logger = LoggerFactory.getLogger("TerraformRunner.class");
+    public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Value("${jenkins.dev.launch.script}")
+    @Value("${app.jenkins_dev_launch_script}")
     private String jenkinsDevLaunchScript;
 
-    @Value("${jenkins.dev.destroy.script}")
+    @Value("${app.jenkins_dev_destroy_script}")
     private String jenkinsDevDestroyScript;
 
     public TerraformRunner() {
@@ -54,8 +54,19 @@ public class TerraformRunner extends ProcessRunner {
 
         } catch(IOException ioe) {
 
+            // Didn't capture log so return status as failed
+            terraformResult = new TerraformApplyResult();
+            terraformResult.setStatus("Failed");
+
             destroyProcess();
 
+        }
+
+        // If result is null return status as failed
+        if (terraformResult == null) {
+
+            terraformResult = new TerraformApplyResult();
+            terraformResult.setStatus("Failed");
         }
 
         logger.debug("Launch result: " + terraformResult);

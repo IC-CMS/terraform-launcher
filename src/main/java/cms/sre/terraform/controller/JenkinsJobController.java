@@ -16,7 +16,7 @@ import java.io.IOException;
 @RequestMapping (value = "/jenkinsjob")
 public class JenkinsJobController {
 
-    private static final Logger logger = LoggerFactory.getLogger("TerraformController.class");
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private JenkinsJobService jenkinsJobService;

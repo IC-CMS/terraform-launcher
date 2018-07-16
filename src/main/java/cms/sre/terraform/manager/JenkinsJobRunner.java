@@ -12,9 +12,9 @@ import java.io.IOException;
 @Component
 public class JenkinsJobRunner extends ProcessRunner {
 
-    public static final Logger logger = LoggerFactory.getLogger("JenkinsJobRunner.class");
+    public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Value("${jenkins.dev.job.runner.script}")
+    @Value("${app.jenkins_dev_job_runner_script}")
     private String jenkinsDevJobRunnerScript;
 
     public JenkinsJobResult run() {

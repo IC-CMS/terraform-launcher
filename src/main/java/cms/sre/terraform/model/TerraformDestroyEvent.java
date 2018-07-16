@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TerraformDestroyEvent {
 
-    private String object_kind;
-
     public String getServer() {
         return server;
     }
@@ -27,11 +25,11 @@ public class TerraformDestroyEvent {
 
     private String project;
 
-    public String getObject_kind() {
-        return object_kind;
-    }
-
-    public void setObject_kind(String object_kind) {
-        this.object_kind = object_kind;
+    @Override
+    public String toString() {
+        return "TerraformDestroyEvent{" +
+                "server='" + server + '\'' +
+                ", project='" + project + '\'' +
+                '}';
     }
 }

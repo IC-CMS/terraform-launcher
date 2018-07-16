@@ -17,7 +17,7 @@ import java.io.IOException;
 @RequestMapping (value = "/terraform")
 public class TerraformController {
 
-    private static final Logger logger = LoggerFactory.getLogger("TerraformController.class");
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private TerraformService terraformService;

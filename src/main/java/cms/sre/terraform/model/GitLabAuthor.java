@@ -1,6 +1,7 @@
 package cms.sre.terraform.model;
 
 public class GitLabAuthor {
+
     private String name;
     private String email;
 

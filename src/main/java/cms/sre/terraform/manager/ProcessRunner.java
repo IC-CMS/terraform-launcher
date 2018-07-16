@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 
 public abstract class ProcessRunner {
 
-    public static final Logger logger = LoggerFactory.getLogger("ProcessRunner.class");
+    public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     ProcessBuilder processBuilder = new ProcessBuilder();
 
