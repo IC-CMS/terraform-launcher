@@ -29,7 +29,7 @@ public class TerraformController {
         return "{status: 'ok'}";
     }
 
-    @RequestMapping(value = "/launch", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/apply", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody String launch(@RequestBody String requestBody) throws IOException {
 
         try {
@@ -38,6 +38,7 @@ public class TerraformController {
             String prettyString = json.toString(4);
 
             logger.debug(prettyString);
+
         } catch (Exception e) {
 
             e.printStackTrace();

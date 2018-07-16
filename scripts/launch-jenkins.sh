@@ -2,6 +2,7 @@
 
 source ~/.bashrc
 
+# probably need to get this from env variable
 cd /home/ermoffa/toasters/terraform/jenkins
 
 echo $(env)
@@ -12,7 +13,7 @@ echo "Now in directory: " $(pwd)
 
 if [ -x terraform-destroy-jenkins.sh ]; then
 
-    echo "Executing script terraform-destroy-jenkins.sh"
+    echo "Executing script terraform-launch-jenkins.sh"
 
 else
 

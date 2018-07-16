@@ -13,11 +13,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 @Component
-public class TerraformRunner {
+public class TerraformRunner extends ProcessRunner {
 
     public static final Logger logger = LoggerFactory.getLogger("TerraformRunner.class");
-
-    ProcessBuilder processBuilder = new ProcessBuilder();
 
     @Value("${jenkins.dev.launch.script}")
     private String jenkinsDevLaunchScript;
@@ -35,7 +33,30 @@ public class TerraformRunner {
 
         // Launch the jenkins-dev Instance first
 
-        TerraformResult terraformResult = runProcess(jenkinsDevLaunchScript);
+        TerraformResult terraformResult = null;
+
+        BufferedReader stdInput = runProcess(jenkinsDevLaunchScript);
+
+        String input = null;
+
+        try {
+
+            while ((input = stdInput.readLine()) != null) {
+
+                //logger.debug(input);
+
+                if (input.startsWith("Apply")) {
+
+                    terraformResult = captureProcessingResults(input);
+                }
+
+            }
+
+        } catch(IOException ioe) {
+
+            destroyProcess();
+
+        }
 
         logger.debug("Launch result: " + terraformResult);
 
@@ -45,14 +66,41 @@ public class TerraformRunner {
 
         // Destroy the jenkins-dev instance when build completed
 
+        destroyProcess();
+
         return terraformResult;
     }
 
     public TerraformResult destroy() {
 
-        TerraformResult terraformResult = runProcess(jenkinsDevLaunchScript);
+        TerraformResult terraformResult = null;
+
+        BufferedReader stdInput = runProcess(jenkinsDevDestroyScript);
+
+        String input = null;
+
+        try {
+
+            while ((input = stdInput.readLine()) != null) {
+
+                //logger.debug(input);
+
+                if (input.startsWith("Destroy")) {
+
+                    terraformResult = captureProcessingResults(input);
+                }
+
+            }
+        } catch(IOException ioe) {
+
+            ioe.printStackTrace();
+
+            destroyProcess();
+        }
 
         logger.debug("Destroy result: " + terraformResult);
+
+        destroyProcess();
 
         return terraformResult;
     }
@@ -62,58 +110,6 @@ public class TerraformRunner {
         return null;
     }
 
-    private TerraformResult runProcess(String script) {
-
-        Process process = null;
-
-        TerraformResult terraformResult = null;
-
-        processBuilder.command("bash", "-c", script);
-
-        try {
-
-            process = processBuilder.start();
-
-            try {
-
-                process.waitFor();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-            BufferedReader errorInput = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-
-            String input = null;
-            String error = null;
-
-            while ((error = errorInput.readLine()) != null) {
-                logger.debug("Error: " + error);
-            }
-
-            while ((input = stdInput.readLine()) != null) {
-
-                //logger.debug(input);
-
-                if (input.startsWith("Apply") || input.startsWith("Destroy")) {
-
-                    terraformResult = captureProcessingResults(input);
-                }
-
-            }
-
-            process.destroy();
-
-        } catch (IOException e) {
-
-            //TODO handle the error
-            e.printStackTrace();
-        }
-
-        return terraformResult;
-
-    }
 
     private TerraformResult captureProcessingResults(String logCapture) {
 

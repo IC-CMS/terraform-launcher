@@ -9,8 +9,5 @@
         <module name="terraform-launcher" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="terraform-launcher" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

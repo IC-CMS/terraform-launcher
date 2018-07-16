@@ -43,8 +43,6 @@ public class TerraformService {
 
     public TerraformResult processRequest(TerraformDestroyEvent event) {
 
-        TerraformResult terraformResult = terraformRunner.destroy();
-
-        return terraformResult;
+        return terraformRunner.destroy();
     }
 }
