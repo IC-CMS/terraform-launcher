@@ -5,6 +5,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TerraformDestroyEvent {
 
+    private String eventType;
+
+    private String server;
+
+    private String project;
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
     public String getServer() {
         return server;
     }
@@ -21,15 +35,14 @@ public class TerraformDestroyEvent {
         this.project = project;
     }
 
-    private String server;
-
-    private String project;
-
     @Override
     public String toString() {
         return "TerraformDestroyEvent{" +
-                "server='" + server + '\'' +
+                "eventType='" + eventType + '\'' +
+                ", server='" + server + '\'' +
                 ", project='" + project + '\'' +
                 '}';
     }
+
+
 }

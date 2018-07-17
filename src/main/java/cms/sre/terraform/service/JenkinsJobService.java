@@ -20,14 +20,14 @@ public class JenkinsJobService {
 
         JenkinsJobResult jenkinsJobResult = null;
 
-        logger.debug("Event object kinds: " + event.getObject_kind());
+        logger.debug("Event type: " + event.getEvent_type());
 
-        switch (event.getObject_kind()) {
+        switch (event.getEvent_type()) {
 
-            case "push":
+            case "build":
 
-                logger.info("Detected Git push event, launch jenkins instance");
-                jenkinsJobResult = jenkinsJobRunner.run();
+                logger.info("Detected JenkinsBuild Request, starting build");
+                jenkinsJobResult = jenkinsJobRunner.run(event.getJenkins_server(), event.getGit_repository(), event.getJob_name());
                 break;
 
             default:

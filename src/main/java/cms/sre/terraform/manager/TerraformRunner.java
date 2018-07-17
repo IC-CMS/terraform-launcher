@@ -143,6 +143,8 @@ public class TerraformRunner extends ProcessRunner {
             terraformResult = new TerraformDestroyResult();
             String[] result = logCapture.split(" ");
 
+
+
             terraformResult.setAction(result[0]);
             terraformResult.setStatus(result[1]);
             terraformResult.setResourcesAdded(Integer.parseInt(result[3]));

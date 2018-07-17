@@ -4,6 +4,8 @@ logging:
     cms.sre.terraform.service.TerraformService: DEBUG
     cms.sre.terraform.controller.TerraformController: DEBUG
     cms.sre.terraform.manager.TerraformRunner: DEBUG
+    cms.sre.terraform.controller.JenkinsJobContoller: DEBUG
+    cms.sre.terraform.service.JenkinsJobService: DEBUG
     cms.sre.terraform.manager.JenkinsJobRunner: DEBUG
 
 app:

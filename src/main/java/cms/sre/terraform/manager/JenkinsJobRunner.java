@@ -1,8 +1,10 @@
 package cms.sre.terraform.manager;
 
 import cms.sre.terraform.model.JenkinsJobResult;
+import cms.sre.terraform.service.JenkinsStatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -17,50 +19,74 @@ public class JenkinsJobRunner extends ProcessRunner {
     @Value("${app.jenkins_dev_job_runner_script}")
     private String jenkinsDevJobRunnerScript;
 
-    public JenkinsJobResult run() {
+    @Autowired
+    private JenkinsStatusService jenkinsStatusService;
 
-        logger.debug("Executing script: " + jenkinsDevJobRunnerScript);
+    public JenkinsJobResult run(String jenkinsServerURL, String gitRepository, String jobName) {
 
-        // Launch the jenkins-dev Instance first
+        // Before launching build, ensure the jenkins server is up all the way
+        // and ready to accepts jobs
+
+        boolean readyToBuild = false;
+
+        // TODO need to decide how long to try before giving up
+        while (jenkinsStatusService.checkStatus(jenkinsServerURL) != 200) {
+
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+
+                logger.error(e.getMessage());
+            }
+
+            if (jenkinsStatusService.checkStatus(jenkinsServerURL) == 200) {
+                readyToBuild = true;
+            }
+        }
 
         JenkinsJobResult jenkinsJobResult = null;
 
-        BufferedReader stdInput = runProcess(jenkinsDevJobRunnerScript);
+        // Jenkins Server should be up and ready to run jobs
+        if (readyToBuild) {
 
-        String input = null;
+            logger.debug("Executing script: " + jenkinsDevJobRunnerScript);
 
-        try {
+            BufferedReader stdInput = runProcess(jenkinsDevJobRunnerScript);
 
-            while ((input = stdInput.readLine()) != null) {
+            String input = null;
 
-                //logger.debug(input);
+            try {
 
-                if (input.startsWith("Apply")) {
+                while ((input = stdInput.readLine()) != null) {
 
-                    jenkinsJobResult = captureProcessingResults(input);
+                    //logger.debug(input);
+
+                    if (input.startsWith("Apply")) {
+
+                        jenkinsJobResult = captureProcessingResults(input);
+                    }
+
                 }
 
+            } catch (IOException ioe) {
+
+                destroyProcess();
+
             }
-
-        } catch(IOException ioe) {
-
-            destroyProcess();
-
         }
 
         logger.debug("Jenkins Job Result: " + jenkinsJobResult);
-
-        // Make sure it's up and running
-
-        // Execute a job
-
-        // Destroy the jenkins-dev instance when build completed
 
         destroyProcess();
 
         return jenkinsJobResult;
     }
 
+    /**
+     * Captures log processing results from Terraform commands
+     * @param logCapture
+     * @return
+     */
     private JenkinsJobResult captureProcessingResults(String logCapture) {
 
         JenkinsJobResult jenkinsJobResult = null;

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # probably need to get this from env variable
-cd /home/ermoffa/toasters/terraform/jenkins
+cd /home/ermoffa/IdeaProjects/terraform-launcher/scripts 
 
 if [ -x ./terraform_aws_sre_destroy_jenkins.sh ]; then
 
