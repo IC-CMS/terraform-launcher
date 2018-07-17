@@ -1,0 +1,14 @@
+logging:
+  level:
+    root: INFO
+    cms.sre.terraform.service.TerraformService: DEBUG
+    cms.sre.terraform.controller.TerraformController: DEBUG
+    cms.sre.terraform.manager.TerraformRunner: DEBUG
+    cms.sre.terraform.controller.JenkinsJobContoller: DEBUG
+    cms.sre.terraform.service.JenkinsJobService: DEBUG
+    cms.sre.terraform.manager.JenkinsJobRunner: DEBUG
+
+app:
+   jenkins_dev_launch_script: /home/ermoffa/IdeaProjects/terraform-launcher/scripts/launch-jenkins.sh
+   jenkins_dev_destroy_script: /home/ermoffa/IdeaProjects/terraform-launcher/scripts/destroy-jenkins.sh
+   jenkins_dev_job_runner_script: /home/ermoffa/IdeaProject/terraforom-launcher/scripts/run-jenkins-job.sh
