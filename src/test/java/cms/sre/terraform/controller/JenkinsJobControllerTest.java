@@ -31,8 +31,8 @@ public class JenkinsJobControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    //@Autowired
-    //TerraformController terraformController;
+    @Autowired
+    TerraformController terraformController;
 
     @Test
     public void runJobEventTest() {
