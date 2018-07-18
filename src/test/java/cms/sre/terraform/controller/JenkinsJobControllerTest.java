@@ -1,6 +1,8 @@
 package cms.sre.terraform.controller;
 
 import cms.sre.terraform.TestConfiguration;
+import cms.sre.terraform.manager.JenkinsJobRunner;
+import cms.sre.terraform.service.JenkinsJobService;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -24,7 +26,10 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestConfiguration.class)
+@SpringBootTest(classes = {TestConfiguration.class,
+        JenkinsJobController.class,
+        JenkinsJobService.class,
+        JenkinsJobRunner.class})
 @AutoConfigureMockMvc
 public class JenkinsJobControllerTest {
 
@@ -32,16 +37,19 @@ public class JenkinsJobControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    TerraformController terraformController;
+    JenkinsJobController jenkinsJobController;
 
     @Test
     public void runJobEventTest() {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        Path path = Paths.get("");
+        String appPath = System.getProperty("user.dir");
 
-        System.out.println("path");
+
+        Path path = Paths.get(appPath + "/src/test/resources/scripts/mock-run-jenkins-job.sh");
+
+        System.out.println("Script Path:" + path);
 
         if (!Files.exists(path)) {
             System.out.println("File not found!");
@@ -55,17 +63,19 @@ public class JenkinsJobControllerTest {
             ioe.printStackTrace();
         }
 
-        HttpClient httpClient = HttpClientBuilder.create().build();
-
         try {
 
-            HttpPost request = new HttpPost("http://localhost:8080/terraform/apply");
-            StringEntity params = new StringEntity(stringBuilder.toString());
-            request.addHeader("content-type", "application/json");
-            request.setEntity(params);
-            HttpResponse response = httpClient.execute(request);
+            MockHttpServletRequestBuilder post = MockMvcRequestBuilders.post("/jennkinsjob/run")
+                    .content("{\"object_kind\": \"push\", \"unknown_prop\":\"Helloworld\"}");
 
-            System.out.println(response.getStatusLine().getStatusCode());
+            System.out.println(this.mockMvc.perform(post).andReturn().getResponse().getContentAsString());
+
+            String response = this.mockMvc.perform(post)
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString();
+
+            System.out.println(response);
 
 
         } catch (Exception e) {

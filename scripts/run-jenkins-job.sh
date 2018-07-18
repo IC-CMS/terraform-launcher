@@ -2,16 +2,13 @@
 
 source ~/.bashrc
 
-# probably need to get this from env variable
-cd /home/ermoffa/IdeaProjects/terraform-launcher/scripts
-
 echo $(env)
 
 echo "Now in directory: " $(pwd)
 
 # Script details for running a jenkins job 
 
-if [ -x run-jenkins-job.sh ]; then
+if [ -x $(pwd)/run-jenkins-job.sh ]; then
 
     echo "Executing script run-jenkins-job.sh"
 

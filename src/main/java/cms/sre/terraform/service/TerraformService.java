@@ -1,5 +1,6 @@
 package cms.sre.terraform.service;
 
+import cms.sre.terraform.manager.JenkinsJobRunner;
 import cms.sre.terraform.manager.TerraformRunner;
 import cms.sre.terraform.model.GitlabPushEvent;
 import cms.sre.terraform.model.TerraformDestroyEvent;
@@ -22,6 +23,12 @@ public class TerraformService {
     @Autowired
     private TerraformRunner terraformRunner;
 
+    @Autowired
+    private JenkinsStatusService jenkinsStatusService;
+
+    @Autowired
+    private JenkinsJobRunner jenkinsJobRunner;
+
     /**
      * Processes a GitLab Push Event request
      * @param event
@@ -39,6 +46,32 @@ public class TerraformService {
 
                 logger.info("Detected Git push event, launch jenkins instance");
                 terraformResult = terraformRunner.apply();
+
+                // Before launching build, ensure the jenkins server is up all the way
+                // and ready to accepts jobs
+
+                boolean readyToBuild = false;
+
+                // TODO need to decide how long to try before giving up
+                while (jenkinsStatusService.checkStatus(terraformResult.getHost()) != 200) {
+
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+
+                        logger.error(e.getMessage());
+                    }
+
+                    if (jenkinsStatusService.checkStatus(terraformResult.getHost()) == 200) {
+                        readyToBuild = true;
+                    }
+                }
+
+                if (readyToBuild) {
+
+                     jenkinsJobRunner.run(terraformResult.getHost(), event.getRepository().getGit_http_url(), event.getProject().getName());
+
+                }
                 break;
 
             default:

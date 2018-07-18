@@ -23,10 +23,6 @@ public class TerraformRunner extends ProcessRunner {
     @Value("${app.jenkins_dev_destroy_script}")
     private String jenkinsDevDestroyScript;
 
-    public TerraformRunner() {
-
-    }
-
     public TerraformResult apply() {
 
         logger.debug("Executing script: " + jenkinsDevLaunchScript);
@@ -138,16 +134,20 @@ public class TerraformRunner extends ProcessRunner {
             terraformResult.setResourcesChanged(Integer.parseInt(result[5]));
             terraformResult.setResourcesDestroyed(Integer.parseInt(result[7]));
 
+        } else if (logCapture.startsWith("private_ip_address")) {
+
+            String[] result = logCapture.split("=");
+
+            terraformResult.setHost(result[1]);
+
         } else if (logCapture.startsWith("Destroy")) {
 
             terraformResult = new TerraformDestroyResult();
             String[] result = logCapture.split(" ");
 
-
-
             terraformResult.setAction(result[0]);
             terraformResult.setStatus(result[1]);
-            terraformResult.setResourcesAdded(Integer.parseInt(result[3]));
+            terraformResult.setResourcesDestroyed(Integer.parseInt(result[3]));
         }
 
         logger.debug("Capture result: " + terraformResult);

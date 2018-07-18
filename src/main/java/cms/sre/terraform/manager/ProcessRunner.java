@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public abstract class ProcessRunner {
 
@@ -16,13 +18,17 @@ public abstract class ProcessRunner {
 
     Process process = null;
 
-    protected BufferedReader runProcess(String script) {
+    protected BufferedReader runProcess(String script, String...args) {
 
         BufferedReader stdInput = null;
 
         BufferedReader errorInput = null;
 
-        processBuilder.command("bash", "-c", script);
+        String scriptArgs = Arrays.asList(args)
+                .stream()
+                .collect(Collectors.joining(","));
+
+        processBuilder.command("bash", "-c", script, scriptArgs);
 
         try {
 

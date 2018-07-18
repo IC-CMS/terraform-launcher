@@ -1,6 +1,10 @@
 package cms.sre.terraform.controller;
 
 import cms.sre.terraform.TestConfiguration;
+import cms.sre.terraform.manager.JenkinsJobRunner;
+import cms.sre.terraform.manager.TerraformRunner;
+import cms.sre.terraform.service.JenkinsStatusService;
+import cms.sre.terraform.service.TerraformService;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -24,7 +28,12 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestConfiguration.class)
+@SpringBootTest(classes = {TestConfiguration.class,
+        TerraformController.class,
+        TerraformService.class,
+        TerraformRunner.class,
+        JenkinsStatusService.class,
+        JenkinsJobRunner.class})
 @AutoConfigureMockMvc
 public class TerraformControllerTest {
 
