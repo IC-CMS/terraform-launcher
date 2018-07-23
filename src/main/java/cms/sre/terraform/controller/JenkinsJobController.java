@@ -49,9 +49,16 @@ public class JenkinsJobController {
 
         JenkinsJobResult launchResult = jenkinsJobService.processRequest(event);
 
-        String json = mapper.writeValueAsString(launchResult);
+        if (launchResult == null) {
 
-        return json;
+            return "Failed to launch job, or job result not returned";
+
+        } else {
+
+            String json = mapper.writeValueAsString(launchResult);
+
+            return json;
+        }
     }
 
 }

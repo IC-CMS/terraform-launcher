@@ -31,7 +31,7 @@ public class JenkinsJobService {
                 break;
 
             default:
-                logger.info("Unidentified object kind, no action performed");
+                logger.error("Unidentified object kind, no action performed");
                 break;
 
         }

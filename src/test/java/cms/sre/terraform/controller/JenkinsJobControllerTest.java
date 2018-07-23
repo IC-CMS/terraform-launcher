@@ -8,11 +8,15 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -33,6 +37,8 @@ import java.util.stream.Stream;
 @AutoConfigureMockMvc
 public class JenkinsJobControllerTest {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -46,10 +52,9 @@ public class JenkinsJobControllerTest {
 
         String appPath = System.getProperty("user.dir");
 
+        Path path = Paths.get(appPath + "/src/test/resources/jenkins_job_build.json");
 
-        Path path = Paths.get(appPath + "/src/test/resources/scripts/mock-run-jenkins-job.sh");
-
-        System.out.println("Script Path:" + path);
+        logger.info("WebHook Microservice:" + path);
 
         if (!Files.exists(path)) {
             System.out.println("File not found!");
@@ -63,26 +68,73 @@ public class JenkinsJobControllerTest {
             ioe.printStackTrace();
         }
 
+        String response = null;
+
         try {
 
-            MockHttpServletRequestBuilder post = MockMvcRequestBuilders.post("/jennkinsjob/run")
-                    .content("{\"object_kind\": \"push\", \"unknown_prop\":\"Helloworld\"}");
+            MockHttpServletRequestBuilder post = MockMvcRequestBuilders.post("/jenkinsjob/run")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(stringBuilder.toString());
 
-            System.out.println(this.mockMvc.perform(post).andReturn().getResponse().getContentAsString());
+            logger.info(this.mockMvc.perform(post).andReturn().getResponse().getContentAsString());
 
-            String response = this.mockMvc.perform(post)
+            response = this.mockMvc.perform(post)
                     .andReturn()
                     .getResponse()
                     .getContentAsString();
-
-            System.out.println(response);
 
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        // TODO Need to add an assert
+        Assert.assertEquals(response, "{\"action\":\"Apply\",\"status\":\"Complete!\",\"resourcesAdded\":4,\"resourcesChanged\":0,\"resourcesDestroyed\":0,\"host\":null}");
+
+    }
+
+    @Test
+    public void runJobEventUnknownPropertiesTest() {
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        String appPath = System.getProperty("user.dir");
+
+        Path path = Paths.get(appPath + "/src/test/resources/scripts/mock-run-jenkins-job.sh");
+
+        logger.info("Script Path:" + path);
+
+        if (!Files.exists(path)) {
+            System.out.println("File not found!");
+            System.exit(-1);
+        }
+
+        try (Stream<String> input = Files.lines(path)) {
+            input.forEach(stringBuilder::append);
+
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+        String response = null;
+
+        try {
+
+            MockHttpServletRequestBuilder post = MockMvcRequestBuilders.post("/jenkinsjob/run")
+                    .content("{\"event_type\": \"push\", \"unknown_prop\":\"Helloworld\"}");
+
+            logger.info(this.mockMvc.perform(post).andReturn().getResponse().getContentAsString());
+
+            response = this.mockMvc.perform(post)
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Assert.assertEquals(response, "Failed to launch job, or job result not returned");
 
     }
 

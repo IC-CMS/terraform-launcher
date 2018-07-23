@@ -1,14 +1,9 @@
 #!/bin/bash
 
-source ~/.bashrc
-
-echo $(env)
-
-echo "Now in directory: " $(pwd)
 
 # Script details for running a jenkins job 
 
-if [ -x $(pwd)/run-jenkins-job.sh ]; then
+if [ -x /scripts/run-jenkins-job.sh ]; then
 
     echo "Executing script run-jenkins-job.sh"
 

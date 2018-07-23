@@ -1,6 +1,6 @@
 package cms.sre.terraform.model;
 
-public class JenkinsJobResult {
+public class JenkinsJobResult extends TerraformAbstractResult {
 
 
 }

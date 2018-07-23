@@ -1,0 +1,6 @@
+{
+  "event_type": "build",
+  "jenkins_server": "test",
+  "job_name": "test job",
+  "git_repository": "test repo"
+}

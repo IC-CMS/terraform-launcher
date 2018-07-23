@@ -12,9 +12,12 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -37,6 +40,8 @@ import java.util.stream.Stream;
 @AutoConfigureMockMvc
 public class TerraformControllerTest {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -48,9 +53,9 @@ public class TerraformControllerTest {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        Path path = Paths.get("src/test/resources/gitlab_webhook.txt");
+        Path path = Paths.get("src/test/resources/gitlab_webhook_microservice.json");
 
-        System.out.println("path");
+        logger.info("Testfile path: " + path);
 
         if (!Files.exists(path)) {
             System.out.println("File not found!");
@@ -64,18 +69,18 @@ public class TerraformControllerTest {
             ioe.printStackTrace();
         }
 
-        HttpClient httpClient = HttpClientBuilder.create().build();
-
         try {
 
-            HttpPost request = new HttpPost("http://localhost:8080/terraform/apply");
-            StringEntity params = new StringEntity(stringBuilder.toString());
-            request.addHeader("content-type", "application/json");
-            request.setEntity(params);
-            HttpResponse response = httpClient.execute(request);
+            MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("http://localhost:8080/terraform/apply");
+            request.contentType(MediaType.APPLICATION_JSON).
+                content(stringBuilder.toString());
 
-            System.out.println(response.getStatusLine().getStatusCode());
+            String response = this.mockMvc.perform(request)
+                    .andReturn()
+                    .getResponse()
+                    .getContentAsString();
 
+            logger.info("Terraform Apply Request: " + response);
 
         } catch (Exception e) {
             e.printStackTrace();

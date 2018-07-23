@@ -1,16 +1,14 @@
 package cms.sre.terraform.manager;
 
-import cms.sre.terraform.model.JenkinsJobResult;
-import cms.sre.terraform.service.JenkinsStatusService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
 import java.io.BufferedReader;
 import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import cms.sre.terraform.model.JenkinsJobResult;
 
 @Component
 public class JenkinsJobRunner extends ProcessRunner {
@@ -82,6 +80,13 @@ public class JenkinsJobRunner extends ProcessRunner {
             jenkinsJobResult = new JenkinsJobResult();
 
             String[] result = logCapture.split(" ");
+
+            jenkinsJobResult.setAction(result[0]);
+            jenkinsJobResult.setStatus(result[1]);
+            jenkinsJobResult.setResourcesAdded(Integer.parseInt(result[3]));
+            jenkinsJobResult.setResourcesChanged(Integer.parseInt(result[5]));
+            jenkinsJobResult.setResourcesDestroyed(Integer.parseInt(result[7]));
+
 
         } else if (logCapture.startsWith("Destroy")) {
 

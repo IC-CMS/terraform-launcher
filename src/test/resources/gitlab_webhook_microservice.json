@@ -1,0 +1,12 @@
+{
+    "object_kind": "push",
+    "user_email": "john@example.com",
+    "ssl_url": "git@example.com:mike/diaspora.git",
+    "user_name": "John Smith",
+    "pull_number": "95790bf891e76fee5e1747ab589903a6a1f80f22",
+    "branch_name": "refs/heads/master",
+    "revsion_number": "da1560886d4f094c3e6c9ef40349f7d38b5d27d7",
+    "project_name": "docker-jenkins",
+    "classification": "UNKNOWN",
+    "timestamp": "Tue Jan 03 23:36:29 UTC 2012"
+}

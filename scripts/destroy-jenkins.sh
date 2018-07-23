@@ -1,12 +1,9 @@
 #!/bin/bash
 
-# probably need to get this from env variable
-cd /home/ermoffa/IdeaProjects/terraform-launcher/scripts 
-
-if [ -x ./terraform_aws_sre_destroy_jenkins.sh ]; then
+if [ -x /scripts/terraform_aws_sre_destroy_jenkins.sh ]; then
 
     echo "Executing script to destroy jenkins"
-    bash -c "./terraform_aws_sre_destroy_jenkins.sh -force -non-interactive"
+    bash -c "/scripts/terraform_aws_sre_destroy_jenkins.sh -force -non-interactive"
 
     echo "Result: $#"
 else
