@@ -3,8 +3,10 @@ package cms.sre.terraform.manager;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import cms.sre.terraform.config.AppConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -17,28 +19,22 @@ public class TerraformRunner extends ProcessRunner {
 
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Value("${app.jenkins_dev_launch_script}")
-    private String jenkinsDevLaunchScript;
-
-    @Value("${app.jenkins_dev_destroy_script}")
-    private String jenkinsDevDestroyScript;
-    
-    @Value("${app.environment}")
-    private String applicationEnvironment;
+    @Autowired
+    AppConfig appConfig;
 
     public TerraformResult apply() {
     	
     	String scriptPath = null;
     	
-    	if (applicationEnvironment.equals("development")) {
+    	if (appConfig.getEnvironment().equals("development")) {
     		
     		String appPath = System.getProperty("user.dir");
     		
-    	    scriptPath = appPath + "/" + jenkinsDevLaunchScript;
+    	    scriptPath = appPath + "/" + appConfig.getJenkinsLaunchScript();
     		
         }
     	else {
-    		scriptPath = jenkinsDevLaunchScript;
+    		scriptPath = appConfig.getJenkinsDestroyScript();
     	}
 
         logger.debug("Attempting to execute script: " + scriptPath);
@@ -96,15 +92,15 @@ public class TerraformRunner extends ProcessRunner {
     public TerraformResult destroy() {
     	
     	String scriptPath = null;
-        if (applicationEnvironment.equals("development")) {
+        if (appConfig.getEnvironment().equals("development")) {
     		
     		String appPath = System.getProperty("user.dir");
     		
-    		scriptPath = appPath + "/" + jenkinsDevDestroyScript;
+    		scriptPath = appPath + "/" + appConfig.getJenkinsDestroyScript();
     		
         } else {
         	
-        	scriptPath = jenkinsDevDestroyScript;
+        	scriptPath = appConfig.getJenkinsDestroyScript();
         }
 
         TerraformResult terraformResult = null;

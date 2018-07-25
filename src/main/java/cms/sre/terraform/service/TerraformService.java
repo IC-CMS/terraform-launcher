@@ -83,6 +83,7 @@ public class TerraformService {
 				// Somehow report that there was an error, for now log it.
 				logger.error("Terraform Apply Failed for " + event.getProject_name() + " event=" + event.getObject_kind());
 			}
+
 			break;
 
 		default:

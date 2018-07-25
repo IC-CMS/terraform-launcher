@@ -1,15 +1,10 @@
 package cms.sre.terraform.controller;
 
-import cms.sre.terraform.TestConfiguration;
+import cms.sre.terraform.config.AppConfig;
 import cms.sre.terraform.manager.JenkinsJobRunner;
 import cms.sre.terraform.manager.TerraformRunner;
 import cms.sre.terraform.service.JenkinsStatusService;
 import cms.sre.terraform.service.TerraformService;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -23,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,7 +25,8 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {TestConfiguration.class,
+@SpringBootTest(classes = {
+        AppConfig.class,
         TerraformController.class,
         TerraformService.class,
         TerraformRunner.class,

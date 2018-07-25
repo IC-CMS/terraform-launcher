@@ -1,22 +1,22 @@
 package cms.sre.terraform.manager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-
+import cms.sre.terraform.config.AppConfig;
+import cms.sre.terraform.model.JenkinsJobResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import cms.sre.terraform.model.JenkinsJobResult;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 @Component
 public class JenkinsJobRunner extends ProcessRunner {
 
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Value("${app.jenkins_dev_job_runner_script}")
-    private String jenkinsDevJobRunnerScript;
+    @Autowired
+    AppConfig appConfig;
 
     /**
      * Run a Jenkins Job and return the build results
@@ -32,11 +32,11 @@ public class JenkinsJobRunner extends ProcessRunner {
 
         JenkinsJobResult jenkinsJobResult = null;
 
-        logger.debug("Executing script: " + jenkinsDevJobRunnerScript);
+        logger.debug("Executing script: " + appConfig.getJenkinsJobRunnerScript());
 
         logger.info("Running job on host: " + host + " against repo: " + gitRepository + " job: " + jobName);
 
-        BufferedReader stdInput = runProcess(jenkinsDevJobRunnerScript, host, gitRepository, jobName);
+        BufferedReader stdInput = runProcess(appConfig.getJenkinsJobRunnerScript(), host, gitRepository, jobName);
 
         String input = null;
 
