@@ -135,7 +135,7 @@ public class TerraformController {
      */
     private boolean validateDestroyRequest(TerraformDestroyEvent event) {
 
-        if ((event.getEventType() != null) &&
+        if ((event.getType() != null) &&
                 (event.getProject() != null) &&
                 (event.getServer() != null)) {
 

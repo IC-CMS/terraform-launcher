@@ -24,26 +24,26 @@ public class TerraformRunner extends ProcessRunner {
 
     public TerraformResult apply() {
     	
-    	String scriptPath = null;
+    	String launcherScript = null;
     	
     	if (appConfig.getEnvironment().equals("development")) {
     		
     		String appPath = System.getProperty("user.dir");
     		
-    	    scriptPath = appPath + "/" + appConfig.getJenkinsLaunchScript();
+    	    launcherScript = appPath + "/" + appConfig.getJenkinsLaunchScript();
     		
         }
     	else {
-    		scriptPath = appConfig.getJenkinsDestroyScript();
+    		launcherScript = appConfig.getJenkinsDestroyScript();
     	}
 
-        logger.debug("Attempting to execute script: " + scriptPath);
+        logger.debug("Attempting to execute script: " + launcherScript);
 
         // Launch a jenkins instance
 
         TerraformResult terraformResult = null;
 
-        BufferedReader stdInput = runProcess(scriptPath);
+        BufferedReader stdInput = runProcess(launcherScript, "apply", "-auto-approve", "-non-interactive");
 
         String input = null;
 
@@ -105,7 +105,7 @@ public class TerraformRunner extends ProcessRunner {
 
         TerraformResult terraformResult = null;
 
-        BufferedReader stdInput = runProcess(scriptPath);
+        BufferedReader stdInput = runProcess(scriptPath, "destroy", "-force");
 
         String input = null;
         

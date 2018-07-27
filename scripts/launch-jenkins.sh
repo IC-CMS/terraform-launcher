@@ -2,14 +2,13 @@
 
 # Script details for launching jenkins instance
 
-if [ -x /scripts/terraform_cms_sre_launch_jenkins.sh ]; then
+echo "Current dir: $(pwd)"
+echo "args $1 $2 $3"
 
-    scriptPath=$(pwd)
+if [ -x ${TOASTERS_DIR}/terraform/jenkins/terraform_cms_sre_jenkins.sh ]; then
     
-    scriptLocation="${scriptPath}/scripts/terraform_cms_sre_launch_jenkins.sh"
-    
-    echo "Executing script ${scriptLocation}"
-    bash -c "${scriptLocation} apply -auto-approve -non-interactive"
+    echo "Executing script ${TOASTERS_DIR}/terraform_cms_sre_launch_jenkins.sh"
+    bash -c "${TOASTERS_DIR}/terraform/jenkins/terraform_cms_sre_jenkins.sh $1 $2 $3"
 
     #echo "Result: $#"
 else

@@ -26,9 +26,11 @@ public abstract class ProcessRunner {
 
         String scriptArgs = Arrays.asList(args)
                 .stream()
-                .collect(Collectors.joining(","));
+                .collect(Collectors.joining(" "));
 
-        processBuilder.command("bash", "-c", script, scriptArgs);
+        logger.debug("Script args: " + scriptArgs);
+
+        processBuilder.command("bash", "-c", script + " "  + scriptArgs);
 
         try {
 

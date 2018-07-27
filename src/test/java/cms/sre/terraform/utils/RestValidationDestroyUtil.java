@@ -14,8 +14,8 @@ public class RestValidationDestroyUtil {
 
         try {
 
-            HttpPost request = new HttpPost("http://localhost:8080/terraform/destroy");
-            StringEntity params = new StringEntity("{\"eventtype\": \"destroy\", \"server\":\"jenkins_dev\", \"project\":\"terraform-launcher\"}");
+            HttpPost request = new HttpPost("http://localhost:8088/terraform/destroy");
+            StringEntity params = new StringEntity("{\"type\": \"destroy\", \"server\":\"jenkins_dev\", \"project\":\"terraform-launcher\"}");
             request.addHeader("content-type", "application/json");
             request.setEntity(params);
             HttpResponse response = httpClient.execute(request);

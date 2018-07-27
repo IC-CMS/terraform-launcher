@@ -15,7 +15,6 @@ public class AppConfig {
 
     private String jenkinsJobRunnerScript;
 
-
     public String getEnvironment() {
         return environment;
     }
