@@ -27,7 +27,7 @@ public class JenkinsJobService {
             case "build":
 
                 logger.info("Detected JenkinsBuild Request, starting build");
-                jenkinsJobResult = jenkinsJobRunner.run(event.getJenkins_server(), event.getGit_repository(), event.getJob_name());
+                jenkinsJobResult = jenkinsJobRunner.run(event.getJenkins_server(), event.getGit_repository(), event.getGit_branch(), event.getJob_name());
                 break;
 
             default:

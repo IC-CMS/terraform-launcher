@@ -1,4 +1,4 @@
-target/*
+/target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -72,3 +72,17 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
+/.classpath
+/.project
+/.settings/
+/.factorypath
+/.idea/compiler.xml
+/.idea/encodings.xml
+/.idea/misc.xml
+/.idea/vcs.xml
+/builder/-version.hwm
+/builder/-version.pwd
+/builder/-version.pwi
+/builder/terraform.tfstate
+/builder/terraform.tfstate.backup
+/builder/.terraform/

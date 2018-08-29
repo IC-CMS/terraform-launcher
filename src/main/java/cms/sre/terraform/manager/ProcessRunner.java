@@ -38,6 +38,16 @@ public abstract class ProcessRunner {
 
             try {
 
+                stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+                errorInput = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+
+                String error = null;
+
+                while ((error = errorInput.readLine()) != null) {
+                    logger.debug("Error: " + error);
+                }
+
                 process.waitFor();
 
             } catch (InterruptedException e) {
@@ -45,17 +55,7 @@ public abstract class ProcessRunner {
                 e.printStackTrace();
             }
 
-            stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-            errorInput = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-
-            String input = null;
-
-            String error = null;
-
-            while ((error = errorInput.readLine()) != null) {
-                logger.debug("Error: " + error);
-            }
 
         } catch (IOException e) {
 

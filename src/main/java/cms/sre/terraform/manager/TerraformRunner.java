@@ -34,7 +34,7 @@ public class TerraformRunner extends ProcessRunner {
     		
         }
     	else {
-    		launcherScript = appConfig.getJenkinsDestroyScript();
+    		launcherScript = appConfig.getJenkinsLaunchScript();
     	}
 
         logger.debug("Attempting to execute script: " + launcherScript);

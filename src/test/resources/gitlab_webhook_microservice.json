@@ -1,7 +1,7 @@
 {
     "object_kind": "push",
     "user_email": "john@example.com",
-    "ssl_url": "git@example.com:mike/diaspora.git",
+    "ssl_url": "https://github.com/IC-CMS/docker-jenkins.git",
     "user_name": "John Smith",
     "pull_number": "95790bf891e76fee5e1747ab589903a6a1f80f22",
     "branch_name": "refs/heads/master",

@@ -15,6 +15,16 @@ public class JenkinsJobEvent {
 
     private String git_repository;
 
+    private String git_branch;
+
+    public String getGit_branch() {
+        return git_branch;
+    }
+
+    public void setGit_branch(String git_branch) {
+        this.git_branch = git_branch;
+    }
+
     public String getJob_name() {
         return job_name;
     }
@@ -54,6 +64,7 @@ public class JenkinsJobEvent {
                 ", jenkins_server='" + jenkins_server + '\'' +
                 ", job_name='" + job_name + '\'' +
                 ", git_repository='" + git_repository + '\'' +
+                ", git_branch='" + git_branch + '\'' +
                 '}';
     }
 }

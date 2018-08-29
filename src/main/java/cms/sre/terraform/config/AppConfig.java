@@ -15,6 +15,14 @@ public class AppConfig {
 
     private String jenkinsJobRunnerScript;
 
+    private String jenkinsHost;
+
+    private String jenkinsPort;
+
+    private String jenkinsUsername;
+
+    private String jenkinsPassword;
+
     public String getEnvironment() {
         return environment;
     }
@@ -46,5 +54,39 @@ public class AppConfig {
     public void setJenkinsJobRunnerScript(String jenkinsJobRunnerScript) {
         this.jenkinsJobRunnerScript = jenkinsJobRunnerScript;
     }
+
+    public String getJenkinsHost() {
+        return jenkinsHost;
+    }
+
+    public void setJenkinsHost(String jenkinsHost) {
+        this.jenkinsHost = jenkinsHost;
+    }
+
+    public String getJenkinsPort() {
+        return jenkinsPort;
+    }
+
+    public void setJenkinsPort(String jenkinsPort) {
+        this.jenkinsPort = jenkinsPort;
+    }
+
+    public String getJenkinsUsername() {
+        return jenkinsUsername;
+    }
+
+    public void setJenkinsUsername(String jenkinsUsername) {
+        this.jenkinsUsername = jenkinsUsername;
+    }
+
+    public String getJenkinsPassword() {
+        return jenkinsPassword;
+    }
+
+    public void setJenkinsPassword(String jenkinsPassword) {
+        this.jenkinsPassword = jenkinsPassword;
+    }
+
+
 }
 

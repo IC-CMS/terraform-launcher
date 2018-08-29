@@ -26,7 +26,7 @@ public class JenkinsJobRunner extends ProcessRunner {
      * @param jobName
      * @return JenkinsJobResult
      */
-    public JenkinsJobResult run(String host, String gitRepository, String jobName) {
+    public JenkinsJobResult run(String host, String gitRepository, String branch, String jobName) {
 
         logger.debug("App path: " + System.getProperty("user.dir"));
 
@@ -36,7 +36,7 @@ public class JenkinsJobRunner extends ProcessRunner {
 
         logger.info("Running job on host: " + host + " against repo: " + gitRepository + " job: " + jobName);
 
-        BufferedReader stdInput = runProcess(appConfig.getJenkinsJobRunnerScript(), host, gitRepository, jobName);
+        BufferedReader stdInput = runProcess(appConfig.getJenkinsJobRunnerScript(), host, gitRepository, branch, jobName);
 
         String input = null;
 
