@@ -23,4 +23,3 @@ data "vault_generic_secret" "jenkins_token" {
 data "vault_generic_secret" "jenkins_git_deploy_private_key" {
    path = "secret/${var.project}/git_deploy_private_key"
 }
-

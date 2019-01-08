@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import static java.lang.Thread.sleep;
@@ -168,19 +170,31 @@ public class TerraformService {
 
                                 BuildResult buildResult = details.getResult();
 
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
                                 if("SUCCESS".equals(buildResult.name())) {
 
                                     SendEmailRequest emailRequest = new SendEmailRequest();
-                                    emailRequest.setSubject("Job Name: " + event.getProject_name() + " Built Successfully");
-                                    emailRequest.setBody("Jenkins successfully completed build of project: \n" +
-                                            event.getSsl_url() + "at " + details.getTimestamp());
+                                    emailRequest.setSubject("Jenkins Job Build status: " + event.getProject_name() + " Built Successfully");
+                                    emailRequest.setDn("CN=Kiin Do Vah ermoffa, OU=Whiterun, OU=Breezehome, OU=Empire, O=JarlBalgruuf, C=Tamriel");
+                                    emailRequest.setBody(
+                                            "This is an automatically generated email - Do not reply to this email \r\n" +
+                                            "Jenkins successfully completed build of project: \r\n" +
+                                            event.getSsl_url() + " at " + sdf.format(new Date(details.getTimestamp())) + "\r\n");
+
+                                    emailNotifierService.sendEmail(emailRequest);
 
                                 } else {
 
                                     SendEmailRequest emailRequest = new SendEmailRequest();
-                                    emailRequest.setSubject("Job Name: " + event.getProject_name() + " Build Failure");
-                                    emailRequest.setBody("Jenkins build failed project: \n" +
-                                            event.getSsl_url() + "at " + details.getTimestamp());
+                                    emailRequest.setSubject("Jenkins Job Build status: " + event.getProject_name() + " Build Failure");
+                                    emailRequest.setDn("CN=Kiin Do Vah ermoffa, OU=Whiterun, OU=Breezehome, OU=Empire, O=JarlBalgruuf, C=Tamriel");
+                                    emailRequest.setBody(
+                                            "This is an automatically generated email - Do not reply to this email \r\n" +
+                                            "Jenkins build failed project: \r\n" +
+                                            event.getSsl_url() + "at " + sdf.format(new Date(details.getTimestamp())) + "\r\n");
+
+                                    emailNotifierService.sendEmail(emailRequest);
                                 }
 
                                 jenkins.deleteJob(event.getProject_name(), true);

@@ -16,7 +16,7 @@ vault write secret/jenkins/token value=''
 alias terraform='sudo docker run --network=host -it --env TF_LOG=DEBUG -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/app -v /.terraform.d/plugins/linux_amd64/:/plugins/ -w /app --log-driver=none hashicorp/terraform:0.11.7'
 
 # Location of the terraform builder directory
-TF_JOB_BUILD_LOCATION=/home/<install_dir>/terraform-launcher/builder
+TF_JOB_BUILD_LOCATION=/home/ermoffa/IdeaProjects/terraform-launcher/builder
 
 # Location of the jenkins toaster scripts
-TOASTERS_DIR=/home/<install_dir>/toasters
+TOASTERS_DIR=/home/ermoffa/workspace/toaster_orig

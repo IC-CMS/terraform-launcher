@@ -5,7 +5,7 @@ provider "consul" {
 
 provider "vault" {
   address	= "http://127.0.0.1:8200"
-  token		= "6cd6b46e-ebe6-970a-9095-b0c8e6bbbc9a"
+  token		= "873773ca-91ae-3573-f04f-2576c4af3f31"
   version	= "1.1.0"
 }
 

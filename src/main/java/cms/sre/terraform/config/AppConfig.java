@@ -23,6 +23,12 @@ public class AppConfig {
 
     private String jenkinsPassword;
 
+    private String emailNotifierUrl;
+
+    private String emailNotifierPort;
+
+    private String emailNotifierPath;
+
     public String getEnvironment() {
         return environment;
     }
@@ -87,6 +93,28 @@ public class AppConfig {
         this.jenkinsPassword = jenkinsPassword;
     }
 
+    public String getEmailNotifierUrl() {
+        return emailNotifierUrl;
+    }
 
+    public void setEmailNotifierUrl(String emailNotifierUrl) {
+        this.emailNotifierUrl = emailNotifierUrl;
+    }
+
+    public String getEmailNotifierPort() {
+        return emailNotifierPort;
+    }
+
+    public void setEmailNotifierPort(String emailNotifierPort) {
+        this.emailNotifierPort = emailNotifierPort;
+    }
+
+    public String getEmailNotifierPath() {
+        return emailNotifierPath;
+    }
+
+    public void setEmailNotifierPath(String emailNotifierPath) {
+        this.emailNotifierPath = emailNotifierPath;
+    }
 }
 
